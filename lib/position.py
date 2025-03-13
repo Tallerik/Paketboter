@@ -48,3 +48,9 @@ class Position:
     def deltaHeadingTo(self, position: "Position"):
         new_heading = self.headingTo(position)
         return new_heading - self.heading
+    
+    def setHeadingTo(self, position: "Position"):
+        self.heading = self.headingTo(position)
+
+    def toString(self):
+        return "Position:\n" + "X: " + str(self.x) + "\nY: " + str(self.y) + "\nHeading: " + str(self.heading)

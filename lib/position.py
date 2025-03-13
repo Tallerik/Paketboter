@@ -37,7 +37,12 @@ class Position:
         hypo = self.distanceTo(position=position) # Hypothenuse
 
         bogen = math.asin(gk / hypo) # Winkel in Bogenmaß
-
-        return self._targetDistrictOffset(position) + round((bogen / (2 * math.pi)) * 360) # Bogen zu Gradmaß
+        grad = round((bogen / (2 * math.pi)) * 360) # Bogen zu Gradmaß
+        offset = self._targetDistrictOffset(position)
+        
+        if offset == 0 or offset == -180:
+            grad = abs(grad-90)
+        
+        return offset + grad
 
     

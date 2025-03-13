@@ -39,10 +39,12 @@ class Position:
         bogen = math.asin(gk / hypo) # Winkel in Bogenmaß
         grad = round((bogen / (2 * math.pi)) * 360) # Bogen zu Gradmaß
         offset = self._targetDistrictOffset(position)
-        
+
         if offset == 0 or offset == -180:
             grad = abs(grad-90)
         
         return offset + grad
 
-    
+    def deltaHeadingTo(self, position: "Position"):
+        new_heading = self.headingTo(position)
+        return new_heading - self.heading

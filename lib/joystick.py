@@ -1,12 +1,21 @@
 from pitop.pma.adc_base import ADCBase
 
+
+def _normalize(value):
+    if value < 0:
+        value = 0
+    if value > 1:
+        value = 1
+    return value
+
+
 class JoyStick:
     def __init__(self, port):
         self.x = AbstractJoyStick(port_name=port, pin_number=2)
         self.y = AbstractJoyStick(port_name=port, pin_number=1)
 
     @property
-    def isPressed(self) -> bool:
+    def is_pressed(self) -> bool:
         return self.y.value == 999
 
     """
@@ -15,19 +24,12 @@ class JoyStick:
     """
     def read(self):
         return int(self.x.value), int(self.y.value)
-    
-    def _normalize(self, value):
-        if value < 0:
-            value = 0
-        if value > 1:
-            value = 1
-        return value
 
     def read_normal(self):
         x,y = self.read()
         nx = (x-250) / 500
         ny = (y-250) / 500
-        return self._normalize(nx), self._normalize(ny)
+        return _normalize(nx), _normalize(ny)
 
 
 class AbstractJoyStick(ADCBase):

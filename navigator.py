@@ -23,6 +23,7 @@ class Navigator:
         turn = self.current.deltaHeadingTo(self.target)
 
         self.drive.rotate(angle=-turn, time_to_take=1)
+        sleep(1)
         self.current.setHeadingTo(self.target) # Sets the heading of current to the new heading
         
         self.drive.forward(1, True, dis)

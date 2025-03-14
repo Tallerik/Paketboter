@@ -7,9 +7,11 @@ class Navigator:
     def __init__(self, x = 0.0, y = 0.0):
         self.current = Position(x,y)
         self.target = Position()
+        self.speed_factor = 0.8
         self.action = Action.IDLE
 
-        self.drive = DriveController(left_motor_port="M3", right_motor_port="M0")
+        self.drive = DriveController(left_motor_port="M1", right_motor_port="M0")
+        self.max_speed = self.drive.max_motor_speed
         
 
     def goto(self, x,y):
@@ -24,7 +26,7 @@ class Navigator:
         self.current.setHeadingTo(self.target) # Sets the heading of current to the new heading
         
         self.drive.forward(1, True, dis)
-
+        sleep(self._calculateDuration(dis))
         self.target.heading = self.current.heading # Save the heading
         self.current = self.target # New current Position is now the old target Position 
         self.target = Position() # Reset target
@@ -32,7 +34,11 @@ class Navigator:
         self.action = Action.IDLE
         
 
+    def _calculateDuration(self, distance):
+        self.max_speed = self.drive.max_motor_speed # Maybe this can Change?
+        target_speed = self.max_speed * self.speed_factor
 
+        return distance / target_speed
 
 
 class Action:

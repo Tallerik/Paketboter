@@ -1,7 +1,7 @@
 from lib.position import Position
 from pitop.robotics import DriveController
 from time import sleep
-
+from math import copysign, floor, radians
 class Navigator:
     
     def __init__(self, left_motor = "M1", right_motor = "M0", speed_factor = 0.8, turn_factor = 0.3, start_x = 0.0, start_y = 0.0):
@@ -26,10 +26,17 @@ class Navigator:
         dis = self.current.distanceTo(self.target)
         turn_angle = self.current.deltaHeadingTo(self.target)
 
-        # Turn towards new heading
-        self.drive.rotate(angle=-turn_angle, max_speed_factor=self.turn_factor) # Turn
-        sleep(self._calculate_turning_duration(turn_angle)) # Wait for the duration of the turn
-        self.current.setHeadingTo(self.target) # Sets the heading of current to the new heading
+        # Turn towards new 
+        print("Angle: " + str(-turn_angle))
+        print("Factor: " + str(self.turn_factor))
+        print("MAX: " + str(self.drive.max_robot_angular_speed * self.turn_factor))
+        print("rads: " + str(abs(radians(-turn_angle))))
+        print("Time: " + str(abs(radians(-turn_angle)) / (self.drive.max_robot_angular_speed * self.turn_factor)))
+        print("Sleep: " + str(self._calculate_turning_duration(turn_angle)))
+        if turn_angle != 0:
+            self.drive.rotate(angle=-turn_angle, max_speed_factor=self.turn_factor) # Turn
+            sleep(self._calculate_turning_duration(turn_angle)) # Wait for the duration of the turn
+            self.current.setHeadingTo(self.target) # Sets the heading of current to the new heading
 
         # Drive forward
         self.drive.forward(self.speed_factor, True, dis)
@@ -47,6 +54,10 @@ class Navigator:
     def go_home(self):
         self.goto(self.initial.x, self.initial.y)
 
+    
+    def stop(self):
+        print("stop") #TODO: IMPLEMENT
+
     def _calculate_driving_duration(self, distance):
         self.max_speed = self.drive.max_motor_speed # Maybe this can Change?
         target_speed = self.max_speed * self.speed_factor
@@ -54,7 +65,7 @@ class Navigator:
         return distance / target_speed
 
     def _calculate_turning_duration(self, angle):
-        angle = abs(angle)
+        angle = abs(radians(angle))
         rotation_speed = self.drive.max_robot_angular_speed * self.turn_factor
         return angle / rotation_speed
 

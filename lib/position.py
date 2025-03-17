@@ -33,7 +33,7 @@ class Position:
         temp = Position(self.x, position.y) # Temporäre Position bei x(current), y(target) 
         #if self.equals(temp):
         #    temp = Position(position.x, self.y)
-        gk = self.distanceTo(temp) # Gegenkathete
+        gk = self.distanceTo(temp) # Gegenkathete (Eigentlich Ankathete aber idk.)
         hypo = self.distanceTo(position=position) # Hypothenuse
 
         bogen = math.asin(gk / hypo) # Winkel in Bogenmaß

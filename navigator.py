@@ -1,8 +1,10 @@
 from lib.position import Position
 from pitop.robotics import DriveController
+from lib.stoppable import Stoppable
 from time import sleep
 from math import copysign, floor, radians
-class Navigator:
+
+class Navigator(Stoppable):
     
     def __init__(self, left_motor = "M1", right_motor = "M0", speed_factor = 0.8, turn_factor = 0.3, start_x = 0.0, start_y = 0.0):
         self.initial = Position(start_x,start_y)
@@ -54,9 +56,11 @@ class Navigator:
     def go_home(self):
         self.goto(self.initial.x, self.initial.y)
 
-    
+    # Inherited from Stoppable
     def stop(self):
         print("stop") #TODO: IMPLEMENT
+    def unstop(self):
+        pass
 
     def _calculate_driving_duration(self, distance):
         self.max_speed = self.drive.max_motor_speed # Maybe this can Change?

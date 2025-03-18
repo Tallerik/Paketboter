@@ -1,8 +1,21 @@
 from pitop import EncoderMotor, ForwardDirection
+from pitop import ServoMotor, ServoMotorSetting
 import socket
 
 def clamp(n, minn, maxn):
     return max(min(maxn, n), minn)
+
+def translate(value, leftMin, leftMax, rightMin, rightMax):
+    # Figure out how 'wide' each range is
+    leftSpan = leftMax - leftMin
+    rightSpan = rightMax - rightMin
+
+    # Convert the left range into a 0-1 range (float)
+    valueScaled = float(value - leftMin) / float(leftSpan)
+
+    # Convert the 0-1 range into a value in the right range.
+    return rightMin + (valueScaled * rightSpan)
+
 
 class RemoteDriving:
 
@@ -16,6 +29,7 @@ class RemoteDriving:
             forward_direction=ForwardDirection.COUNTER_CLOCKWISE,
         )
 
+        self.servo = ServoMotor("S0")
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.socket.bind(('', 12000))
 
@@ -41,6 +55,8 @@ class RemoteDriving:
         
         self.left.set_power(speed_left)
         self.right.set_power(speed_right)
+
+        self.servo.target_angle = translate(float(params[2]), 0, 1, -90, 90)
 
     def _get_direction_multiplier(self, value: float, is_right: bool):
         statement = (value > 0.5) if is_right else (value < 0.5)

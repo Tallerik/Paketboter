@@ -23,9 +23,9 @@ led4.blink(background=True, on_time=0.2, off_time=0.2)
 
 nav = Navigator()
 
-#nav.goto(0, 1)
-#nav.goto(1, 1)
-#nav.goto(1, 0)
-#nav.goto(0, 0)
+nav.goto(0, 1)
+nav.goto(1, 1)
+nav.goto(1, 0)
+nav.goto(0, 0)
 while True:
     sleep(1)

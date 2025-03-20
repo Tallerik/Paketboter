@@ -1,12 +1,15 @@
 from lib.remote_driving import RemoteDriving
 from lib.distance_protection import DistanceProtection
-from bluedot_drive import BlueDotDrive
+#from bluedot_drive import BlueDotDrive
 from time import sleep
 
 
-#dr = RemoteDriving()
+dr = RemoteDriving()
 
-drive = BlueDotDrive(autostart=False)
-prot = DistanceProtection(stopper = drive)
+#drive = BlueDotDrive(autostart=False)
+prot = DistanceProtection(stopper = dr)
 
-drive.run()
+#drive.run()
+
+while True:
+    dr.listen()

@@ -48,7 +48,7 @@ class RemoteDriving(Stoppable):
 
         self.servo.target_angle = translate(-float(params[2]), -1, 1, -90, 90)
 
-        speed_multiplier = float(params[0])
+        speed_multiplier = float(params[0]) / 4
         direction_multiplier = float(params[1])
         if direction_multiplier < self.deadzone and direction_multiplier > -self.deadzone:
             direction_multiplier = 0

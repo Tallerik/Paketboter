@@ -12,8 +12,8 @@ class DistanceProtection:
 
     def in_range(self):
         if isinstance(self.stopper, Navigator):
-            if self.navigator.action == Action.GOTO:
-                self.navigator.stop()
+            if self.stopper.action == Action.GOTO:
+                self.stopper.stop()
         else:
             self.stopper.stop()
         print("In range")
